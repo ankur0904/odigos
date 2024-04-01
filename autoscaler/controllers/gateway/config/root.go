@@ -38,7 +38,13 @@ func Calculate(dests *odigosv1.DestinationList, processors *odigosv1.ProcessorLi
 			return "", fmt.Errorf("no configer for %s", dest.Spec.Type)
 		}
 
-		configer.ModifyConfig(&dest, currentConfig)
+		err := configer.ModifyConfig(&dest, currentConfig)
+		if err != nil {
+			return "", err.Error()
+		} else {
+			return "Success", nil
+		}
+
 	}
 
 	processorsCfg, tracesProcessors, metricsProcessors, logsProcessors := commonconf.GetCrdProcessorsConfigMap(processors, odigosv1.CollectorsGroupRoleClusterGateway)

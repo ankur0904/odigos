@@ -33,6 +33,9 @@ type DestinationSpec struct {
 
 // DestinationStatus defines the observed state of Destination
 type DestinationStatus struct {
+	// DestinationError and DestinationStatus
+	DestinationError  string `json:"destinationError,omitempty"`
+	DestinationStatus string `json:"destinationStatus,omitempty"`
 }
 
 //+genclient
