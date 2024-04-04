@@ -33,9 +33,7 @@ type DestinationSpec struct {
 
 // DestinationStatus defines the observed state of Destination
 type DestinationStatus struct {
-	// DestinationError and DestinationStatus
-	DestinationError  string `json:"destinationError,omitempty"`
-	DestinationStatus string `json:"destinationStatus,omitempty"`
+	Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
 }
 
 //+genclient

@@ -8,6 +8,7 @@ import (
 	odigosv1 "github.com/keyval-dev/odigos/api/odigos/v1alpha1"
 	commonconf "github.com/keyval-dev/odigos/autoscaler/controllers/common"
 	"github.com/keyval-dev/odigos/common"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 const (
@@ -40,9 +41,10 @@ func Calculate(dests *odigosv1.DestinationList, processors *odigosv1.ProcessorLi
 
 		err := configer.ModifyConfig(&dest, currentConfig)
 		if err != nil {
-			return "", err.Error()
+			log.Log.V(0).Error(err, "Error:", err)
+			dest.Status = err.Error() // Update the status with the error message
 		} else {
-			return "Success", nil
+			dest.Status = "Updated"
 		}
 
 	}

@@ -6,7 +6,6 @@ import (
 	odigosv1 "github.com/keyval-dev/odigos/api/odigos/v1alpha1"
 	commonconf "github.com/keyval-dev/odigos/autoscaler/controllers/common"
 	"github.com/keyval-dev/odigos/common"
-	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 var (
@@ -28,19 +27,16 @@ func (j *Jaeger) DestType() common.DestinationType {
 func (j *Jaeger) ModifyConfig(dest *odigosv1.Destination, currentConfig *commonconf.Config) error {
 
 	if !isTracingEnabled(dest) {
-		log.Log.V(0).Error(ErrorJaegerTracingDisabled, "skipping Jaeger destination config")
 		return ErrorJaegerTracingDisabled
 	}
 
 	url, urlExist := dest.Spec.Data[jaegerUrlKey]
 	if !urlExist {
-		log.Log.V(0).Error(ErrorJaegerMissingURL, "skipping Jaeger destination config")
 		return ErrorJaegerMissingURL
 	}
 
 	grpcEndpoint, err := parseUnencryptedOtlpGrpcUrl(url)
 	if err != nil {
-		log.Log.V(0).Error(err, "skipping Jaeger destination config")
 		return err
 	}
 
